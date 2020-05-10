@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>撞撞CAT</title>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="./scripts/combo_cat.js"></script>
+  <script src="./scripts/index.js"></script>
+  <style>
+    @font-face {
+      font-family: "851CHIKARA";
+      src: url(851CHIKARA.ttf);
+    }
+    body {
+      margin: 0;
+    }
+    canvas {
+      height: 100%;
+      width: 100%;
+    }
+    #app {
+      height: -webkit-fill-available;
+      height: -moz-available;
+      height: fill-available;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #2d2d2d;
+      overflow: hidden;
+    }
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #start-btn {
+      font-family: "851CHIKARA";
+      font-size: 24px;
+      color: #fff;
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px;
+      height: 50px;
+      opacity: 1;
+      transition: all ease-out .3s;
+      background: transparent;
+      border: 0;
+    }
+    #start-btn:before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #161616;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-6.86deg);
+      z-index: -1;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+    #start-btn:after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #EE8F00;
+      width: 100%;
+      height: 100%;
+      transform: translate(15px, 10px) rotate(-6.86deg);
+      z-index: -2;
+      transition: all ease-in-out .1s;
+    }
+    #start-btn:active:after  {
+      transform: translate(20px, 15px) rotate(-6.86deg);
+    }
+    
+    #start-btn:span {
+      position: relative;
+      z-index: 1;
+      transform: rotate(4.1deg);
+    }
+    #start-btn.outside {
+      transform: translate(-50%, -60%);
+      opacity: 0;
+    }
+
+    #loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: #2d2d2d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity ease-in .3s;
+    }
+    #loading img {
+      width: 50%;
+      max-width: 200px;
+    }
+    #loading.hidden {
+      /* visibility: hidden; */
+      opacity: 0;
+      pointer-events: none;
+    }
+    #logo {
+      position: absolute;
+      top: 76px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      transition: all ease-out .3s;
+      opacity: 1;
+    }
+    #logo.outside {
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="animation_container" style="position: relative; background-color:rgba(255, 255, 255, 1.00);">
+      <canvas id="canvas" width="480" height="720" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+      <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:480px; height:720px; position: absolute; left: 0px; top: 0px; display: block;"></div>
+      <div id="logo"><img src="images/impact-cat_logo.svg" alt="" srcset=""></div>
+      <button id="start-btn"><span>START</span></button>
+    </div>
+    <div id="loading">
+      <img src="images/cat_loading.gif" alt="" srcset="">
+    </div>
+  </div>
+</body>
+</html>
