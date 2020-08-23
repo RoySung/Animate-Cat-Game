@@ -627,6 +627,7 @@ p.nominalBounds = new cjs.Rectangle(-180.2,-86,309.1,167.1);
 		this.stop()
 		this.movingCan.visible = false
 		this.cat.visible = false
+		playSound("SplashingAroundTheGreenOrbs",-1);
 	}
 
 	// actions tween:
@@ -693,7 +694,8 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/combo_cat_atlas_.png?1594166310210", id:"combo_cat_atlas_"}
+		{src:"images/combo_cat_atlas_.png?1598195342291", id:"combo_cat_atlas_"},
+		{src:"sounds/SplashingAroundTheGreenOrbs.mp3?1598195342383", id:"SplashingAroundTheGreenOrbs"}
 	],
 	preloads: []
 };

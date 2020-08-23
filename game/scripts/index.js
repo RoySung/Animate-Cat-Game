@@ -9,6 +9,7 @@ window.onload = function() {
     var comp=AdobeAn.getComposition("E0E9BC29B44D4CD7945D8895FE890F4B");
     var lib=comp.getLibrary();
     var loader = new createjs.LoadQueue(false);
+    loader.installPlugin(createjs.Sound);
     loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
     loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
     var lib=comp.getLibrary();
@@ -268,4 +269,8 @@ function drawRect(stage, rect) {
   debugCatRect.alpha = 0.5;
   stage.addChild(debugCatRect)
   stage.update()
+}
+
+function playSound(id, loop) {
+  return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop})
 }
