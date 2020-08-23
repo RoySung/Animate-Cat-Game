@@ -119,6 +119,13 @@ window.onload = function() {
         const base = (this.initX - this.posInStageCenter.x)
         return base / Math.floor(50 / this.speed)
       }
+
+      randomSpeed() {
+        const max = 9
+        const min = 6
+        this.speed = (Math.floor(Math.random()*(max - min + 1)) + min) / 10
+      }
+
       initMovingCan() {
         fetchSize(this.movingCan)
         this.movingCan.visible = true
@@ -194,6 +201,7 @@ window.onload = function() {
                       createjs.Tween.get(can).to({y: can.y+75}, 50);
                     })
                     setScore(movingCanControler.canArr.length)
+                    movingCanControler.randomSpeed()
                   }
                 }
               }

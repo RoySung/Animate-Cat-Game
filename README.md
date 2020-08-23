@@ -1,4 +1,4 @@
-![Combo Cat](https://stampo.fun/s/s0097_10/s0097_10_3.svg)
+![Combo Cat](https://stampo.fun/s/s0097_10/s400_s0097_10_3.png)
 
 貓咪肚子餓了，餓到想吃掉自己的好友🐭... 所以努力累積更多罐頭吧，小心不要被罐頭撞倒了😉
 
