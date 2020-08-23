@@ -38,72 +38,188 @@ window.onload = function() {
     let scene = MENU
     const logo = document.getElementById('logo')
     const startBtn = document.getElementById('start-btn')
-    console.log(stage)
-    console.log(exportRoot)
+    const restartBtn = document.getElementById('restart-btn')
+    const scoreText = document.getElementById('score-wrap__text')
+
     
-    const { catHungry, catTransition, cat, table } = exportRoot
-    
-    console.log(catHungry)
+    const { catHungry, catTransition, cat, catShock, table, movingCan } = exportRoot
+    const catInitPos = { x: cat.x, y: cat.y }
+    const tableInitPos = { x: table.x, y: table.y }
+    const playCatTransition = () => {
+      return new Promise((resolve, reject) => {
+        const doms = [startBtn, restartBtn, logo]
+        doms.forEach(dom => {
+          if (!dom.classList.contains('outside')) dom.classList.add('outside')
+        })
+        exportRoot.setChildIndex(catTransition, exportRoot.numChildren-1);
+        catTransition.play()
+        delay(2000).then(() => resolve())
+      })
+    }
+    const getMainPositionForFirstChild = (objInMain) => {
+      const child = objInMain.children[0]
+      const main = objInMain.parent
+
+      // get real size in main and pos in global
+      let childPos = child.getBounds()
+      childPos.width = childPos.width*cat.scaleX
+      childPos.height = childPos.height*cat.scaleY
+      childPos = { ...childPos, ...child.localToGlobal(childPos.x, childPos.y)}
+      
+      // translate global pos to main
+      let posInMain = main.globalToLocal(childPos.x, childPos.y)
+      posInMain = {...childPos, ...posInMain}
+      posInMain.cx = posInMain.x + posInMain.width/2
+      posInMain.cy = posInMain.y + posInMain.height/2
+
+      return posInMain
+    }
+    cat.jump = () => cat.gotoAndPlay('cat_jump_frame')
     const handleJump = () => {
       if (cat.currentLabel !== 'cat_stand_frame') return
-      console.log(cat.y)
       cat.jump()
       // cat.gotoAndPlay('cat_shock_frame')
     }
-    cat.jump = () => cat.gotoAndPlay('cat_jump_frame')
-    const gameStart = () => {
-      scene = START
-      cat.visible = true
-      document.addEventListener('click', handleJump)
-      console.log(table)
-      const { movingCan } = table
-      setTimeout(() => {
-        movingCan.visible = true
-        movingCan.x = stage.width
-        movingCan.y = -221.6
-        const centerX = stage.width / 2
-        const rate = 5
-        const distance = stage.width / 2 / rate
-        const timer = setInterval(() => {
-          const { width } = movingCan.getBounds()
-          movingCan.x -= distance
-          const canCenterX = movingCan.x + width / 4
-          console.log(movingCan.hitTest(stage.width/2, stage.height/2))
-          if (canCenterX <= centerX) {
-            clearInterval(timer)
-            console.log(cat.y)
-            cat.gotoAndPlay('cat_shock_frame')
-          }
-        }, 100)
-      }, 2000)
-      createjs.Ticker.addEventListener("tick", () => {
-        if (cat.currentLabel === 'cat_jump_over_frame') {
-          cat.gotoAndPlay('cat_stand_frame')
-          table.y += 75
-
+    const showCatShock = () => {
+      const pos = getMainPositionForFirstChild(cat)
+      exportRoot.setChildIndex(catShock, exportRoot.numChildren-1);
+      catShock.x = pos.cx
+      catShock.y = pos.cy
+      catShock.gotoAndPlay(0)     
+    }
+    const hideCatShock = () => {
+      const { width, height } = stage.getBounds()
+      catShock.x = width
+      catShock.y = height
+    }
+    const setScore = (score) => {
+      scoreText.innerHTML =  score
+    }
+    
+    
+    let debugCatRect = null
+    class MovingCan {
         
-        }
-        // TODO: check  hit
-        // const catRect = cat.getBounds()
-        // const canRect = movingCan.getBounds()
-        // movingCan.localToLocal(canRect.x, canRect.y, canRect.parent)
-      });
+      constructor(movingCanTemplate) {
+        this.speed = 1
+        this.isMoving = false
+        this.count = 0
+        this.movingCan = null
+        this.canArr = []
+
+        this.movingCan = this.createMovingCan()
+        fetchSize(movingCanTemplate)
+        this.posInStageCenter = { x: movingCanTemplate.x, y: movingCanTemplate.y }
+        this.initX = stage.canvas.width / stage.scale + movingCanTemplate.width/2
+        this.initMovingCan()
+        this.count = 0
+      }
+
+      get rate() {
+        const base = (this.initX - this.posInStageCenter.x)
+        return base / Math.floor(50 / this.speed)
+      }
+      initMovingCan() {
+        fetchSize(this.movingCan)
+        this.movingCan.visible = true
+        this.movingCan.x = this.initX
+        this.isMoving = true
+      }
+      moveCan() {
+        if (this.isMoving) this.movingCan.x -= this.rate
+      }
+
+      createMovingCan() {
+        const newMovingCan = new lib.moving_can();
+        this.count += 1;
+        newMovingCan.name = `movingCan-${this.count}`;
+        newMovingCan.setTransform(219.75,493.6,0.7872,0.7872,0,0,0,-25.7,-2.4);
+        exportRoot.addChild(newMovingCan);
+        exportRoot.setChildIndex(cat, exportRoot.numChildren-1);
+        if (this.movingCan) this.canArr.push(this.movingCan)
+        this.movingCan = newMovingCan
+        this.initMovingCan()
+        
+        return newMovingCan
+      }
+
+      removeAllCans() {
+        exportRoot.removeChild(this.movingCan)
+        this.movingCan = this.createMovingCan()
+        this.canArr.forEach(can => {
+          exportRoot.removeChild(can) 
+        })
+        this.canArr = []
+      }
+    }
+    let hanldeTick
+    let movingCanControler = new MovingCan(movingCan)
+    const initCat = () => {
+      hideCatShock()
+      cat.visible = true
+      cat.x = catInitPos.x
+      cat.y = catInitPos.y
+      table.x = tableInitPos.x
+      table.y = tableInitPos.y
+      cat.gotoAndStop('cat_stand_frame')
+    }
+    const gameStart = () => {
+        scene = START
+        catHungry.gotoAndPlay('cat_hungry_happy')
+        setScore(0)
+        delay(400).then(() => {
+          catHungry.visible = false
+          playCatTransition().then(() => {
+            initCat() 
+            movingCanControler.removeAllCans()
+            createjs.Ticker.removeEventListener("tick", hanldeTick);
+            hanldeTick = () => {
+              movingCanControler.moveCan()
+              
+              // check  hit
+              if (cat.visible && cat.currentLabel !== 'cat_shock_frame') {
+                const isHit = ndgmr.checkRectCollision(movingCanControler.movingCan.can.canRect, cat.children[0])
+                const isSafeHit = cat.children[0].safeRect && ndgmr.checkRectCollision(movingCanControler.movingCan.can.canRect, cat.children[0].safeRect)
+                if (isHit) {
+                  cat.stop()
+                  movingCanControler.isMoving = false
+                  if (!isSafeHit) {
+                    handleGameOver()
+                  } else {
+                    movingCanControler.movingCan.man.visible = false
+                    cat.gotoAndPlay('cat_stand_frame')
+                    table.y += 75
+                    movingCanControler.createMovingCan()
+                    movingCanControler.canArr.forEach(can => {
+                      createjs.Tween.get(can).to({y: can.y+75}, 50);
+                    })
+                    setScore(movingCanControler.canArr.length)
+                  }
+                }
+              }
+            }
+            createjs.Ticker.addEventListener("tick", hanldeTick);
+            document.addEventListener('click', handleJump)
+          })
+        })
+    }
+    const handleGameOver = () => {
+      cat.visible = false
+      showCatShock()
+      restartBtn.classList.remove('outside')
+      document.removeEventListener('click', handleJump)
     }
     startBtn.addEventListener('click', () => {
-      scene = START
-      startBtn.classList.add('outside')
-      logo.classList.add('outside')
-      catHungry.gotoAndPlay('cat_hungry_happy')
-      setTimeout(() => {
-        catTransition.play()
-        setTimeout(() => {
-          catHungry.visible = false
-          gameStart()
-        }, 300)
-      }, 400)
-      
+      gameStart()
     })
+    restartBtn.addEventListener('click', () => {
+      gameStart()
+    })
+    
 
+    // delay(1000).then(() =>  {
+    //   gameStart()
+    // })
 
     //Registers the "tick" event listener.
     fnStartAnimation = function() {
@@ -121,16 +237,27 @@ window.onload = function() {
   }
 }
 
-function checkIntersection (rect1,rect2) {
-  if (
-    rect1.x >= rect2.x + rect2.width ||
-    rect1.x + rect1.width <= rect2.x ||
-    rect1.y >= rect2.y + rect2.height ||
-    rect1.y + rect1.height <= rect2.y 
-  ) return false;
- 
- 
-  return true;
- 
- 
- }
+async function delay (ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), ms)
+  })
+}
+
+function fetchSize(obj) {
+  const size = obj.getBounds()
+  const main = obj.parent
+  obj.width = size.width * main.scaleX
+  obj.height = size.height* main.scaleY
+
+  return obj
+}
+
+function drawRect(stage, rect) {
+  debugCatRect = new createjs.Shape();
+  debugCatRect.graphics.beginFill('blue');
+  debugCatRect.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
+  debugCatRect.graphics.endFill();
+  debugCatRect.alpha = 0.5;
+  stage.addChild(debugCatRect)
+  stage.update()
+}
