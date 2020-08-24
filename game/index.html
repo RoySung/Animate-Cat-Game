@@ -36,6 +36,10 @@
       overflow: hidden;
     }
 
+    #animation_container {
+      overflow: hidden;
+    }
+
     @media only screen and (max-width: 768px) {
       #animation_container {
         transform: scale(0.9);
@@ -119,6 +123,8 @@
     #loading img {
       width: 50%;
       max-width: 200px;
+      opacity: 1;
+      transition: all .8s ease-out;
     }
     #loading.hidden {
       /* visibility: hidden; */
@@ -153,8 +159,8 @@
 </head>
 <body>
   <div id="app">
-    <div id="animation_container" style="position: relative; background-color:rgba(255, 255, 255, 1.00);">
-      <canvas id="canvas" width="480" height="720" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+    <div id="animation_container" style="position: relative; background-color: #2d2d2d;">
+      <canvas id="canvas" width="480" height="720" style="position: absolute; display: block; background-color: #2d2d2d;"></canvas>
       <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:480px; height:720px; position: absolute; left: 0px; top: 0px; display: block;"></div>
       <div id="logo"><img src="images/impact-cat_logo.svg" alt="" srcset=""></div>
       <button id="start-btn"><span>START</span></button>

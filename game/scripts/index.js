@@ -1,7 +1,7 @@
 window.onload = function() {
   var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
   init()
-  this.setTimeout(() => document.getElementById('loading').classList.add('hidden'), 500)
+  this.setTimeout(() => document.getElementById('loading').classList.add('hidden'), 1000)
   function init() {
     canvas = document.getElementById("canvas");
     anim_container = document.getElementById("animation_container");
