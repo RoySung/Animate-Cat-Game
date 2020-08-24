@@ -81,6 +81,9 @@ window.onload = function() {
       cat.jump()
       // cat.gotoAndPlay('cat_shock_frame')
     }
+    const handleKeydown = (e)  => {
+      if (e.keyCode === 32) handleJump()
+    }
     const showCatShock = () => {
       const pos = getMainPositionForFirstChild(cat)
       exportRoot.setChildIndex(catShock, exportRoot.numChildren-1);
@@ -160,7 +163,7 @@ window.onload = function() {
         this.canArr = []
       }
     }
-    let hanldeTick
+    let handleTick
     let movingCanControler = new MovingCan(movingCan)
     const initCat = () => {
       hideCatShock()
@@ -180,8 +183,8 @@ window.onload = function() {
           playCatTransition().then(() => {
             initCat() 
             movingCanControler.removeAllCans()
-            createjs.Ticker.removeEventListener("tick", hanldeTick);
-            hanldeTick = () => {
+            createjs.Ticker.removeEventListener("tick", handleTick);
+            handleTick = () => {
               movingCanControler.moveCan()
               
               // check  hit
@@ -207,8 +210,9 @@ window.onload = function() {
                 }
               }
             }
-            createjs.Ticker.addEventListener("tick", hanldeTick);
+            createjs.Ticker.addEventListener("tick", handleTick);
             document.addEventListener('click', handleJump)
+            window.addEventListener("keydown", handleKeydown)
           })
         })
     }
@@ -217,6 +221,7 @@ window.onload = function() {
       showCatShock()
       restartBtn.classList.remove('outside')
       document.removeEventListener('click', handleJump)
+      window.removeEventListener("keydown", handleKeydown)
     }
     startBtn.addEventListener('click', () => {
       gameStart()

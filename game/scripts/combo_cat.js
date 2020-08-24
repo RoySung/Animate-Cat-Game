@@ -3,7 +3,7 @@
 	var p; // shortcut to reference prototypes
 	var lib={};var ss={};var img={};
 	lib.ssMetadata = [
-			{name:"combo_cat_atlas_", frames: [[884,1605,343,273],[0,1682,345,275],[482,1132,364,168],[482,960,366,170],[0,960,480,720],[0,0,852,958],[1329,1605,55,57],[1229,1796,480,152],[1430,1384,512,410],[1329,1664,25,28],[1329,1694,11,12],[1229,1605,98,99],[1450,402,434,353],[854,802,574,801],[1450,0,400,400],[1430,802,539,580],[854,0,594,800],[482,1605,400,358]]}
+			{name:"combo_cat_atlas_", frames: [[884,1605,343,273],[0,1682,345,275],[482,960,364,168],[884,1880,310,134],[0,960,480,720],[0,0,852,958],[1329,1605,55,57],[1229,1796,480,152],[1430,1384,512,410],[1329,1664,25,28],[1329,1694,11,12],[1229,1605,98,99],[1450,402,434,353],[854,802,574,801],[1450,0,400,400],[1430,802,539,580],[854,0,594,800],[482,1605,400,358]]}
 	];
 	
 	
@@ -455,14 +455,14 @@
 		}
 	
 		// actions tween:
-		this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(38).call(this.frame_38).wait(1).call(this.frame_39).wait(6));
+		this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(38).call(this.frame_38).wait(1).call(this.frame_39).wait(1));
 	
 		// Layer_2
 		this.instance = new lib.cat_shock();
 		this.instance.setTransform(-0.05,0,1,1,0,0,0,203.2,-79);
 		this.instance._off = true;
 	
-		this.timeline.addTween(cjs.Tween.get(this.instance).wait(44).to({_off:false},0).wait(1));
+		this.timeline.addTween(cjs.Tween.get(this.instance).wait(39).to({_off:false},0).wait(1));
 	
 		// Layer_1
 		this.instance_1 = new lib.catStandInit();
@@ -487,10 +487,10 @@
 		this.catStand.setTransform(0,-58.75);
 		this.catStand._off = true;
 	
-		this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_1}]}).to({state:[{t:this.catJump}]},5).to({state:[{t:this.catJump_1}]},12).to({state:[{t:this.catJump_2}]},9).to({state:[{t:this.catStand}]},1).to({state:[{t:this.catStand}]},3).to({state:[{t:this.catStand}]},6).to({state:[{t:this.catStand}]},5).to({state:[{t:this.catStand}]},3).wait(1));
-		this.timeline.addTween(cjs.Tween.get(this.catJump).wait(5).to({_off:false},0).to({_off:true,regY:-0.6,y:-938.7},12,cjs.Ease.get(1)).wait(28));
-		this.timeline.addTween(cjs.Tween.get(this.catJump_1).wait(5).to({_off:false},12,cjs.Ease.get(1)).to({_off:true,regX:0.1,regY:-0.4,x:0.1,y:-486.25},9,cjs.Ease.get(-1)).wait(19));
-		this.timeline.addTween(cjs.Tween.get(this.catStand).wait(27).to({_off:false},0).to({y:383.15},3).to({scaleY:0.8599},6).to({scaleY:1},5).wait(4));
+		this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_1}]}).to({state:[{t:this.catJump}]},5).to({state:[{t:this.catJump_1}]},7).to({state:[{t:this.catJump_2}]},9).to({state:[{t:this.catStand}]},1).to({state:[{t:this.catStand}]},3).to({state:[{t:this.catStand}]},6).to({state:[{t:this.catStand}]},5).to({state:[{t:this.catStand}]},3).wait(1));
+		this.timeline.addTween(cjs.Tween.get(this.catJump).wait(5).to({_off:false},0).to({_off:true,regY:-0.6,y:-938.7},7,cjs.Ease.get(1)).wait(28));
+		this.timeline.addTween(cjs.Tween.get(this.catJump_1).wait(5).to({_off:false},7,cjs.Ease.get(1)).to({_off:true,regX:0.1,regY:-0.4,x:0.1,y:-486.25},9,cjs.Ease.get(-1)).wait(19));
+		this.timeline.addTween(cjs.Tween.get(this.catStand).wait(22).to({_off:false},0).to({y:383.15},3).to({scaleY:0.8599},6).to({scaleY:1},5).wait(4));
 	
 		this._renderFirstFrame();
 	
@@ -574,10 +574,10 @@
 		// Layer_2
 		this.canRect = new lib.can_rect();
 		this.canRect.name = "canRect";
-		this.canRect.setTransform(1,-65.95);
+		this.canRect.setTransform(1.1,-57.05,0.8466,0.7881,0,0,0,0.1,-0.1);
 	
 		this.instance_1 = new lib.CachedBmp_1();
-		this.instance_1.setTransform(-90.5,-108.45,0.5,0.5);
+		this.instance_1.setTransform(-76.5,-90.55,0.5,0.5);
 	
 		this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_1},{t:this.canRect}]}).wait(1));
 	
@@ -694,8 +694,8 @@
 		color: "#FFFFFF",
 		opacity: 1.00,
 		manifest: [
-			{src:"images/combo_cat_atlas_.png?1598195342291", id:"combo_cat_atlas_"},
-			{src:"sounds/SplashingAroundTheGreenOrbs.mp3?1598195342383", id:"SplashingAroundTheGreenOrbs"}
+			{src:"images/combo_cat_atlas_.png?1598279875899", id:"combo_cat_atlas_"},
+			{src:"sounds/SplashingAroundTheGreenOrbs.mp3?1598279875995", id:"SplashingAroundTheGreenOrbs"}
 		],
 		preloads: []
 	};
